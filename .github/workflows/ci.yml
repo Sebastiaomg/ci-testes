@@ -22,7 +22,6 @@ jobs:
         name: Install pnpm
         with:
           version: 10
-          cache: true
 
       - name: Setup node | ${{ matrix.node }}
         uses: actions/setup-node@v6
@@ -32,5 +31,11 @@ jobs:
       - run: pnpm install
       - run: pnpm run test
 
+      - name: Generate tag
+        id: generate_tag
+        run: |
+          SHA=$(echo $GITHUB_SHA | head -c7)
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
+
       - name: Build docker image
-        run: docker build -t api-citestes:latest .
+        run: docker build -t api-citestes:${{ steps.generate_tag.outputs.sha }} .
