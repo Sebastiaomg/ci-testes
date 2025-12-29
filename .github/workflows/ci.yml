@@ -43,8 +43,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build docker image
-        run: docker build -t sebastiao/api-citestes:${{ steps.generate_tag.outputs.sha }} .
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: sebastiao/api-citestes:${{ steps.generate_tag.outputs.sha }},sebastiao/api-citestes:latest
 
-      - name: Push image
-        run: docker push sebastiao/api-citestes:${{ steps.generate_tag.outputs.sha }}
+      # - name: Build and push
+      #   run: docker build -t sebastiao/api-citestes:${{ steps.generate_tag.outputs.sha }} .
+
+      # - name: Push image
+      #   run: docker push sebastiao/api-citestes:${{ steps.generate_tag.outputs.sha }}
