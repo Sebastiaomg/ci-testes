@@ -31,3 +31,6 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install
       - run: pnpm run test
+
+      - name: Build docker image
+        run: docker build -t api-citestes:latest .
