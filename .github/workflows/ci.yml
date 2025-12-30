@@ -5,7 +5,8 @@ on:
   push:
     branches:
       - main
-    #Pull_request:
+  # Pull_request:
+  #   type: [opened]
 
 jobs:
   build:
