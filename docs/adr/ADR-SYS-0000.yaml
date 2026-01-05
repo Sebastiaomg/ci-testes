@@ -1,0 +1,107 @@
+id: ADR-SYS-0000
+schema_version: v1
+lint_version: v1
+title: Convenção e Governança Formal de ADRs
+prefix: SYS
+status: Accepted
+date: "2025-12-27"
+
+context:
+  description: >
+    Com a adoção de ADRs como artefatos arquiteturais normativos e sua validação
+    automática via CI/CD, tornou-se necessário estabelecer uma convenção formal
+    para classificação, escopo e vocabulário mínimo comum, bem como um modelo
+    formal de governança auditável e automatizável.
+
+    Sem um vocabulário controlado e regras de governança claras, decisões tornam-se
+    difíceis de comparar, validar automaticamente ou analisar ao longo do tempo,
+    e o crescimento do sistema exige disciplina formal na documentação arquitetural.
+
+governance_rule:
+  decision_summary: >
+    Estabelecer a convenção oficial de classificação de ADRs, regras de numeração,
+    vocabulário arquitetural base comum a todas as ADRs e um modelo formal de
+    governança integrando DSL declarativa, validação automática via CI/CD e
+    revisão arquitetural humana.
+
+  rules:
+    - Numeração independente por prefixo
+    - Sequência inicia em 0001
+    - Reclassificação exige nova ADR
+    - ADR substituída deve ser explicitamente referenciada
+
+  classification:
+    rule: >
+      Uma ADR pertence à camada onde a decisão causa maior impacto caso seja revertida.
+
+    prefixes:
+      SYS: Arquitetura e governança global
+      APP: Aplicação ou domínio específico
+      API: Contratos e integrações
+      DB: Persistência e dados
+      INFRA: Infraestrutura e cloud
+      SEC: Segurança da informação
+      OPS: Operação e observabilidade
+      DATA: Dados analíticos
+
+  lifecycle:
+    allowed_status:
+      - Proposto
+      - Aceito
+      - Depreciado
+      - Substituído
+    rules:
+      - ADRs não podem ser removidas
+      - Alterações apenas via Pull Request
+      - Substituições exigem referência explícita
+
+  dsl_adoption:
+    principles:
+      - Texto livre explica
+      - Campos DSL declaram
+      - DSL é incremental e retrocompatível
+
+  audit_governance:
+    applicable: true
+    audit_location:
+      - Git
+      - Pull Requests
+      - CI/CD
+
+dsl_base_vocabulary:
+  decision_type:
+    - architectural_pattern
+    - infrastructure_choice
+    - data_strategy
+    - integration_strategy
+    - security_policy
+    - governance_rule
+
+  decision_intent:
+    - scalability
+    - performance
+    - security
+    - governance
+    - cost_optimization
+    - reliability
+    - compliance
+
+related_decisions:
+  supersedes:
+    - ADR-SYS-0000
+    - ADR-SYS-0001
+
+consequences:
+  positive:
+    - Padronização arquitetural
+    - Base para validação automática
+    - Comparabilidade entre decisões
+    - Governança executável
+    - Rastreabilidade completa
+    - Redução de decisões implícitas
+  negative:
+    - Curva inicial de aprendizado
+    - Overhead inicial de disciplina
+
+notes:
+  normative: true

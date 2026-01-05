@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ADR Schema",
+  "type": "object",
+  "required": ["id", "title", "status", "date", "prefix", "context", "decision"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^ADR-[A-Z]+-[0-9]{4}$"
+    },
+    "schema_version": {
+      "type": "string",
+      "enum": ["v1", "v2"]
+    },
+    "lint_version": {
+      "type": "string",
+      "enum": ["v1", "v2"]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5
+    },
+    "prefix": {
+      "type": "string",
+      "enum": ["SYS", "APP", "API", "DB", "INFRA", "SEC", "OPS", "DATA"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["Proposed", "Accepted", "Deprecated", "Superseded"]
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+
+    "context": {
+      "type": "object",
+      "required": ["description"],
+      "properties": {
+        "description": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "decision": {
+      "type": "object",
+      "required": ["summary"],
+      "properties": {
+        "summary": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": [
+            "architectural_pattern",
+            "infrastructure_choice",
+            "data_strategy",
+            "integration_strategy",
+            "security_policy",
+            "governance_rule"
+          ]
+        },
+        "intent": {
+          "type": "string",
+          "enum": [
+            "scalability",
+            "performance",
+            "security",
+            "governance",
+            "cost_optimization",
+            "reliability",
+            "compliance"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "enum": ["system", "application", "bounded_context"]
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "rules": {
+      "type": "object",
+      "properties": {
+        "enforces": { "type": "array", "items": { "type": "string" } },
+        "forbids": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "bounded_context": { "type": ["string", "null"] },
+        "consistency_model": {
+          "type": "string",
+          "enum": ["strong", "eventual", "none"]
+        },
+        "transaction_scope": {
+          "type": "string",
+          "enum": ["local", "distributed", "none"]
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "related_decisions": {
+      "type": "object",
+      "properties": {
+        "implements": { "type": "array", "items": { "type": "string" } },
+        "extends": { "type": "array", "items": { "type": "string" } },
+        "constrains": { "type": "array", "items": { "type": "string" } },
+        "depends_on": { "type": "array", "items": { "type": "string" } },
+        "supersedes": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+
+    "consequences": {
+      "type": "object",
+      "properties": {
+        "positive": { "type": "array", "items": { "type": "string" } },
+        "negative": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+
+    "technical_impacts": {
+      "type": "object",
+      "properties": {
+        "affected_components": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "migrations_required": { "type": "boolean" },
+        "training_required": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+
+    "audit_governance": {
+      "type": "object",
+      "properties": {
+        "applicable": { "type": "boolean" },
+        "audit_location": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
