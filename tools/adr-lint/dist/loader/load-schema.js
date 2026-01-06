@@ -16,17 +16,22 @@ export function validateSchema(schemaPath, adrs) {
     const ajv = new Ajv2020({
         allErrors: true,
         strict: true,
+        strictRequired: false,
     });
     addFormats(ajv);
     const validate = ajv.compile(schema);
     adrs.forEach((adr, index) => {
-        const valid = validate(adr);
+        const { file, ...adrWithoutFile } = adr;
+        const valid = validate(adrWithoutFile);
         if (!valid) {
+            const file = typeof adr === 'object' && adr !== null && 'file' in adr
+                ? adr.file
+                : undefined;
             const message = ajv.errorsText(validate.errors, {
                 separator: '\n',
-                dataVar: `ADR[${index + 1}]`,
+                dataVar: file ? `ADR(${file})` : `ADR[${index + 1}]`,
             });
-            throw new Error(`❌ Erro de schema:\n${message}`);
+            throw new Error(`❌ Erro de schema${file ? ` no arquivo "${file}"` : ''}:\n${message}`);
         }
     });
 }

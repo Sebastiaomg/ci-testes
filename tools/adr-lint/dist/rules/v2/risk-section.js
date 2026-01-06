@@ -1,5 +1,5 @@
 export const riskSection = ({ adrs }) => adrs
-    .filter((a) => a.status === 'Aceito')
+    .filter((a) => a.status === 'Accepted')
     .filter((a) => !a.consequences)
     .map((a) => ({
     severity: 'warn',

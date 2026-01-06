@@ -1,6 +1,18 @@
+import { detectDecisionTypes } from '../../engine/detect-decision-type.js';
 export const requiredSections = ({ adrs }) => adrs
-    .filter((a) => !a.decision?.summary)
-    .map((a) => ({
+    .filter((adr) => {
+    // ADR antiga
+    if (adr.decision?.summary)
+        return false;
+    // ADR nova
+    const types = detectDecisionTypes(adr);
+    if (types.length === 1) {
+        const type = types[0];
+        return !adr[type]?.decision_summary;
+    }
+    return true;
+})
+    .map((adr) => ({
     severity: 'fail',
-    message: `${a.id}: decision.summary é obrigatório`,
+    message: `${adr.id}: decision_summary é obrigatório`,
 }));

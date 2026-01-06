@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 import { loadADRs } from './loader/load-adr.js';
 import { validateSchema } from './loader/load-schema.js';
 import { runRules } from './engine/rule-engine.js';
@@ -7,10 +8,14 @@ import { summarize } from './engine/severity.js';
 import { generateAdrIndex } from './engine/generate-index.js';
 import { rulesetV1 } from './versions/ruleset.v1.js';
 import { rulesetV2 } from './versions/ruleset.v2.js';
+import { rulesetV3 } from './versions/ruleset.v3.js';
 import path from 'path';
 
 const command = process.argv[2] ?? 'lint';
-const ADR_DIR = path.resolve(process.cwd(), 'docs/adr');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const repoDir = path.resolve(__dirname, '../../../');
+const ADR_DIR = path.resolve(repoDir, 'docs/adr');
 
 function selectRules(lintVersion: string) {
   switch (lintVersion) {
@@ -18,6 +23,8 @@ function selectRules(lintVersion: string) {
       return rulesetV1;
     case 'v2':
       return rulesetV2;
+    case 'v3':
+      return rulesetV3;
     default:
       throw new Error(`Ruleset não definido para lint_version=${lintVersion}`);
   }
@@ -30,7 +37,7 @@ switch (command) {
     // Valida cada ADR individualmente pelo schema correspondente
     adrs.forEach((adr) => {
       const schemaFile = path.resolve(
-        process.cwd(),
+        repoDir,
         `docs/adr-schema/adr.schema.${adr.schema_version}.json`
       );
 
@@ -60,8 +67,9 @@ switch (command) {
   case 'index': {
     const adrs = loadADRs(ADR_DIR);
     const index = generateAdrIndex(adrs);
+    const output = path.join(repoDir, 'docs/ADR-Index.md');
 
-    fs.writeFileSync('docs/ADR-index.md', index);
+    fs.writeFileSync(output, index);
     console.log('📄 ADR index gerado com sucesso');
     break;
   }

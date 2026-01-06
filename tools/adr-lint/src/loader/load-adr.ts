@@ -4,7 +4,9 @@ import yaml from 'js-yaml';
 import { ADR } from '../types.js';
 
 export function loadADRs(dir: string): ADR[] {
-  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.yaml'));
+  const files = fs.readdirSync(dir)
+    .filter((f) => f.endsWith('.yaml'))
+    .filter((f) => !f.toLowerCase().includes('template'));
 
   return files.map((file) => {
     const raw = yaml.load(

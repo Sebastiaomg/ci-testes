@@ -1,0 +1,85 @@
+id: ADR-{PREFIX}-{NNNN}
+schema_version: v2
+lint_version: v1
+title: "{Título curto e objetivo}"
+prefix: SYS | APP | API | DB | INFRA | SEC | OPS | DATA
+status: Proposed
+date: "YYYY-MM-DD"
+
+context:
+  description: >
+    Descreva o problema, necessidade ou restrição arquitetural.
+    Inclua contexto técnico, organizacional ou regulatório relevante.
+
+# ============================================================
+# ⚠️ IMPORTANTE
+# Este ADR deve conter EXATAMENTE UM tipo de decisão.
+# Descomentar mais de um bloco causará falha de validação (anyOf).
+# Nenhum bloco vem ativo por padrão.
+# ============================================================
+
+# architectural_pattern:
+#   decision_summary: >
+#     Declare de forma clara e objetiva a decisão tomada.
+#   intent: scalability | performance | security | governance | cost_optimization | reliability | compliance
+#   scope: system | application | bounded_context
+
+# infrastructure_choice:
+#   decision_summary: >
+#     Declare de forma clara e objetiva a decisão tomada.
+#   constraints:
+#     bounded_context: null | nome_do_contexto
+#     consistency_model: strong | eventual | none
+#     transaction_scope: local | distributed | none
+#   technical_impacts:
+#     affected_components: []
+#     migrations_required: false
+#     training_required: false
+
+# dsl_infrastructure:
+#   decision_summary: >
+#     Declare de forma clara e objetiva a decisão tomada.
+#   dsl_definition: {}
+#   enforcement: {}
+
+# data_strategy:
+#   decision_summary: >
+#     Declare de forma clara e objetiva a decisão tomada.
+
+# integration_strategy:
+#   decision_summary: >
+#     Declare de forma clara e objetiva a decisão tomada.
+
+# security_policy:
+#   decision_summary: >
+#     Declare de forma clara e objetiva a decisão tomada.
+
+# governance_rule:
+#   decision_summary: >
+#     Declare de forma clara e objetiva a decisão tomada.
+#   rules:
+#     enforces: []
+#     forbids: []
+#   audit_governance:
+#     applicable: false
+#     audit_location: []
+#   dsl_adoption:
+#     principles: []
+#   lifecycle:
+#     allowed_status: []
+#     rules: []
+
+# ============================================================
+# Campos opcionais globais (válidos para qualquer tipo de decisão)
+# ============================================================
+
+related_decisions:
+  implements: []
+  extends: []
+  constrains: []
+  depends_on: []
+  supersedes: []
+
+consequences:
+  positive: []
+  negative: []
