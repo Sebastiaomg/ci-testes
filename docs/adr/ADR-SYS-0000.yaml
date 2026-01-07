@@ -1,6 +1,6 @@
 id: ADR-SYS-0000
 schema_version: v2
-lint_version: v1
+lint_version: v3
 title: Convenção e Governança Formal de ADRs (Architecture Decision Records)
 prefix: SYS
 status: Accepted

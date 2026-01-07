@@ -1,6 +1,6 @@
 id: ADR-{PREFIX}-{NNNN}
 schema_version: v2
-lint_version: v1
+lint_version: v3
 title: "{Título curto e objetivo}"
 prefix: SYS | APP | API | DB | INFRA | SEC | OPS | DATA
 status: Proposed

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { loadADRs } from './loader/load-adr.js';
+import { loadADRs, loadADRsFromIndex } from './loader/load-adr.js';
 import { validateSchema } from './loader/load-schema.js';
 import { runRules } from './engine/rule-engine.js';
 import { summarize } from './engine/severity.js';
@@ -9,13 +9,16 @@ import { generateAdrIndex } from './engine/generate-index.js';
 import { rulesetV1 } from './versions/ruleset.v1.js';
 import { rulesetV2 } from './versions/ruleset.v2.js';
 import { rulesetV3 } from './versions/ruleset.v3.js';
+import { rulesetIndexV1 } from './versions/ruleset-index.v1.js';
 import path from 'path';
 
 const command = process.argv[2] ?? 'lint';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoDir = path.resolve(__dirname, '../../../');
-const ADR_DIR = path.resolve(repoDir, 'docs/adr');
+const indexDir = path.resolve(repoDir, 'docs/adr-index');
+const adrDir = path.resolve(repoDir, 'docs/adr');
+const adrIndexFile = path.join(indexDir, 'adr-index.md');
 
 function selectRules(lintVersion: string) {
   switch (lintVersion) {
@@ -32,7 +35,11 @@ function selectRules(lintVersion: string) {
 
 switch (command) {
   case 'lint': {
-    const adrs = loadADRs(ADR_DIR);
+    const adrs = loadADRs(adrDir);
+
+    const adrIndex = fs.existsSync(adrIndexFile)
+    ? loadADRsFromIndex(adrIndexFile)
+    : [];
 
     // Valida cada ADR individualmente pelo schema correspondente
     adrs.forEach((adr) => {
@@ -50,6 +57,7 @@ switch (command) {
       return runRules(rules, {
         adrs: [adr],
         ids: [adr.id],
+        index: adrIndex,
       });
     });
 
@@ -65,9 +73,26 @@ switch (command) {
   }
 
   case 'index': {
-    const adrs = loadADRs(ADR_DIR);
+    const adrs = loadADRs(adrDir);
+    const adrIndex = fs.existsSync(adrIndexFile)
+    ? loadADRsFromIndex(adrIndexFile)
+    : [];
+    const results = adrs.flatMap((adr) => {
+      return runRules(rulesetIndexV1, {
+        adrs: [adr],
+        ids: [adr.id],
+        index: adrIndex,
+      });
+    });
+    const { errors, warnings } = summarize(results);
+
+    warnings.forEach((w) => console.warn('⚠️', w.message));
+    errors.forEach((e) => console.error('❌', e.message));
+
+    if (errors.length) process.exit(1);
+    
     const index = generateAdrIndex(adrs);
-    const output = path.join(repoDir, 'docs/ADR-Index.md');
+    const output = path.join(indexDir, 'adr-index.md');
 
     fs.writeFileSync(output, index);
     console.log('📄 ADR index gerado com sucesso');

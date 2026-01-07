@@ -11,8 +11,8 @@ export const singleDecisionType: Rule = ({ adrs }) =>
         severity: 'fail',
         message:
           types.length > 1
-            ? `${adr.id}: ADR define múltiplos decision_types (${types.join(', ')})`
-            : `${adr.id}: ADR não define decision_type`,
+            ? `${adr.id}: ADR define múltiplos decision_types (${types.join(', ')}) (regra v2)`
+            : `${adr.id}: ADR não define decision_type (regra v2)`,
       }];
     }
 

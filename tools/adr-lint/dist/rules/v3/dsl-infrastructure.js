@@ -6,13 +6,13 @@ export const dslInfrastructureChecks = ({ adrs }) => adrs
     if (!dsl.dsl_definition) {
         results.push({
             severity: 'fail',
-            message: `${a.id}: dsl_infrastructure exige dsl_definition`,
+            message: `${a.id}: dsl_infrastructure exige dsl_definition (regra v3)`,
         });
     }
     if (!dsl.enforcement) {
         results.push({
             severity: 'warn',
-            message: `${a.id}: enforcement recomendado para dsl_infrastructure`,
+            message: `${a.id}: enforcement recomendado para dsl_infrastructure (regra v3)`,
         });
     }
     return results;

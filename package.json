@@ -22,7 +22,7 @@
     "adr:build": "pnpm --filter @local/adr-lint build",
     "adr:lint": "pnpm exec adr-lint",
     "adr:index": "pnpm --filter @local/adr-lint exec adr-lint index",
-    "adr:check": "pnpm adr:lint"
+    "adr:check": "pnpm adr:lint && pnpm adr:index"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

@@ -6,13 +6,13 @@ export const architecturalPatternChecks = ({ adrs }) => adrs
     if (!p.intent) {
         errors.push({
             severity: 'fail',
-            message: `${a.id}: architectural_pattern exige intent`,
+            message: `${a.id}: architectural_pattern exige intent (regra v3)`,
         });
     }
     if (!p.scope) {
         errors.push({
             severity: 'fail',
-            message: `${a.id}: architectural_pattern exige scope`,
+            message: `${a.id}: architectural_pattern exige scope (regra v3)`,
         });
     }
     return errors;

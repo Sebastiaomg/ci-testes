@@ -6,5 +6,5 @@ export const riskSection: Rule = ({ adrs }) =>
     .filter((a) => !a.consequences)
     .map((a) => ({
       severity: 'warn',
-      message: `${a.id}: riscos/consequências não documentados`,
+      message: `${a.id}: riscos/consequências não documentados (regra v2)`,
     }));

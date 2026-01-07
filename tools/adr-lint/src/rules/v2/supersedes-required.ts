@@ -6,5 +6,5 @@ export const supersedesRequired: Rule = ({ adrs }) =>
     .filter((a) => !a.related_decisions?.supersedes?.length)
     .map((a) => ({
       severity: 'fail',
-      message: `${a.id}: status Substituído exige supersedes`,
+      message: `${a.id}: status Substituído exige supersedes (regra v2)`,
     }));

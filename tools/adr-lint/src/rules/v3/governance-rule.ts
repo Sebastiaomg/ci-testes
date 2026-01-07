@@ -9,14 +9,14 @@ export const governanceRuleChecks: Rule = ({ adrs }) =>
       if (!a.governance_rule?.rules) {
         errors.push({
           severity: 'fail',
-          message: `${a.id}: governance_rule exige rules`,
+          message: `${a.id}: governance_rule exige rules (regra v3)`,
         });
       }
 
-      if (a.audit_governance?.applicable !== true) {
+      if (a.governance_rule?.audit_governance?.applicable !== true) {
         errors.push({
           severity: 'fail',
-          message: `${a.id}: governance_rule exige audit_governance.applicable=true`,
+          message: `${a.id}: governance_rule exige audit_governance.applicable=true (regra v3)`,
         });
       }
 

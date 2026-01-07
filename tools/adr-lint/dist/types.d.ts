@@ -1,49 +1,49 @@
-/**
- * Severidade das regras
- */
 export type Severity = 'warn' | 'fail';
-/**
- * Resultado de uma regra
- */
 export interface RuleResult {
     severity: Severity;
     message: string;
 }
-/**
- * Contexto passado para cada regra
- */
+export type AdrStatus = 'Proposed' | 'Accepted' | 'Deprecated' | 'Superseded';
+export interface AdrFromIndex {
+    id: string;
+    status: AdrStatus;
+    hash: string;
+}
 export interface RuleContext {
     adrs: ADR[];
     ids: string[];
+    index: AdrFromIndex[];
 }
-/**
- * Assinatura de uma regra
- */
 export type Rule = (ctx: RuleContext) => RuleResult[];
-/**
- * Tipos possíveis de decisão (novo schema v2+)
- */
 export type DecisionType = 'architectural_pattern' | 'infrastructure_choice' | 'dsl_infrastructure' | 'data_strategy' | 'integration_strategy' | 'security_policy' | 'governance_rule';
-/**
- * Base comum a todos os decision_types
- */
 export interface DecisionBase {
     decision_summary: string;
 }
-/**
- * Governança e auditoria (usada principalmente em governance_rule,
- * mas pode aparecer como seção transversal)
- */
+export interface Constraints {
+    bounded_context?: string | null;
+    consistency_model?: 'strong' | 'eventual' | 'none';
+    transaction_scope?: 'local' | 'distributed' | 'none';
+}
+export interface Rules {
+    enforces?: string[];
+    forbids?: string[];
+}
+export interface DslAdoption {
+    principles?: string[];
+}
+export interface Lifecycle {
+    allowed_status?: string[];
+    lifecycle_rules?: string[];
+}
+export interface TechnicalImpacts {
+    affected_components?: string[];
+    migrations_required?: boolean;
+    training_required?: boolean;
+}
 export interface AuditGovernance {
     applicable?: boolean;
     audit_location?: string[];
 }
-export type AdrStatus = 'Proposed' | 'Accepted' | 'Deprecated' | 'Superseded';
-/**
- * ADR — compatível com:
- * - schema v1 (decision.summary)
- * - schema v2+ (decision_types no topo)
- */
 export interface ADR {
     id: string;
     schema_version: string;
@@ -52,59 +52,36 @@ export interface ADR {
     prefix: string;
     status: AdrStatus;
     date: string;
-    /**
-     * Contexto textual (presente em v1 e v2)
-     */
     context?: {
         description: string;
     };
-    decision?: {
-        summary?: string;
-        type?: string;
-        intent?: string;
-        scope?: string;
-    };
     architectural_pattern?: DecisionBase & {
-        intent?: string;
-        scope?: string;
+        intent?: 'scalability' | 'performance' | 'security' | 'governance' | 'cost_optimization' | 'reliability' | 'compliance';
+        scope?: 'system' | 'application' | 'bounded_context';
     };
     infrastructure_choice?: DecisionBase & {
-        constraints?: unknown;
-        technical_impacts?: unknown;
+        constraints?: Constraints;
+        technical_impacts?: TechnicalImpacts;
     };
     dsl_infrastructure?: DecisionBase & {
-        dsl_definition?: unknown;
-        enforcement?: unknown;
+        dsl_definition?: Record<string, unknown>;
+        enforcement?: Record<string, unknown>;
     };
-    data_strategy?: DecisionBase & {
-        datasets?: string[];
-        governance?: unknown;
-    };
-    integration_strategy?: DecisionBase & {
-        protocols?: string[];
-        contracts?: unknown;
-    };
-    security_policy?: DecisionBase & {
-        controls?: string[];
-        compliance?: string[];
-    };
+    data_strategy?: DecisionBase;
+    integration_strategy?: DecisionBase;
+    security_policy?: DecisionBase;
     governance_rule?: DecisionBase & {
-        rules?: {
-            enforces?: string[];
-            forbids?: string[];
-        };
+        rules?: Rules;
         audit_governance?: AuditGovernance;
-        dsl_adoption?: {
-            principles?: string[];
-        };
-        lifecycle?: {
-            allowed_status?: string[];
-            lifecycle_rules?: string[];
-        };
+        dsl_adoption?: DslAdoption;
+        lifecycle?: Lifecycle;
     };
-    /**
-     * Seções transversais (podem existir em qualquer ADR)
-     */
+    constraints?: Constraints;
+    rules?: Rules;
+    dsl_adoption?: DslAdoption;
+    lifecycle?: Lifecycle;
+    technical_impacts?: TechnicalImpacts;
+    audit_governance?: AuditGovernance;
     consequences?: {
         positive?: string[];
         negative?: string[];
@@ -116,14 +93,5 @@ export interface ADR {
         depends_on?: string[];
         supersedes?: string[];
     };
-    audit_governance?: AuditGovernance;
-    technical_impacts?: {
-        affected_components?: string[];
-        migrations_required?: boolean;
-        training_required?: boolean;
-    };
-    /**
-     * Campo interno do linter
-     */
     file: string;
 }

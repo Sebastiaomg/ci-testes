@@ -1,6 +1,6 @@
 id: ADR-SYS-0001
 schema_version: v2
-lint_version: v1
+lint_version: v3
 title: Introdução Formal da DSL (Domain-Specific Language) de Decisão Arquitetural
 prefix: SYS
 status: Accepted
