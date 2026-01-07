@@ -7,7 +7,7 @@ RUN corepack prepare pnpm --activate
 RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm run build
-RUN pnpm install --prod --frozen-lockfile && pnpm store prune
+RUN CI=true pnpm install --prod --frozen-lockfile && pnpm store prune
 
 FROM node:24.12.0-alpine
 
